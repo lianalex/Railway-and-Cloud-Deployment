@@ -5,9 +5,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
@@ -52,6 +55,11 @@ public class GettingStartedApplication {
         }
     }
 
+    @GetMapping("/")
+    public String dbinput() {
+        return "dbinput";
+    }
+
     // Modify the getRandomString() method to mimic the functionality of the randomly generated string that should be output by the getRandomString() method -> Read from DB: 2023-04-26 20:38:06.780407 uuhwrigbta
     // Specifically, every time the URL is accessed:
     // the timestamp of the request and a randomly generated string should be inserted into a table and
@@ -69,6 +77,21 @@ public class GettingStartedApplication {
 
         return sb.toString();
     }
+
+
+
+    @PostMapping("/submit")
+    public String submitUserInput(@RequestParam("userInput") String userInput) {
+        try (Connection connection = dataSource.getConnection()) {
+            final var statement = connection.createStatement();
+            String sanitizedInput = userInput.replaceAll("'", "''"); // Escape single quotes
+            statement.executeUpdate("INSERT INTO table_timestamp_and_random_string (tick, random_string) VALUES (now(), '" + sanitizedInput + "')");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/database";
+    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(GettingStartedApplication.class, args);

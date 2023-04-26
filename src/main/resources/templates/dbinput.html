@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Input Form</title>
+</head>
+<body>
+    <h1>Enter a string to add to the database</h1>
+    <form action="/submit" method="post">
+        <label for="userInput">User Input:</label>
+        <input type="text" id="userInput" name="userInput" required>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
