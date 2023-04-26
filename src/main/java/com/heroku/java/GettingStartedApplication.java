@@ -55,10 +55,11 @@ public class GettingStartedApplication {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/dbinput")
     public String dbinput() {
         return "dbinput";
     }
+    
 
     // Modify the getRandomString() method to mimic the functionality of the randomly generated string that should be output by the getRandomString() method -> Read from DB: 2023-04-26 20:38:06.780407 uuhwrigbta
     // Specifically, every time the URL is accessed:
